@@ -10,11 +10,19 @@
         <activity
             android:name=".atividadePrincipal"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".codigo"
+            android:label="@string/title_activity_codigo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".detalhes"
+            android:label="@string/title_activity_detalhes" >
         </activity>
     </application>
 
