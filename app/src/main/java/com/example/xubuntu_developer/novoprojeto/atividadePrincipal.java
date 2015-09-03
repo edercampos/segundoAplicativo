@@ -1,5 +1,7 @@
 package com.example.xubuntu_developer.novoprojeto;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -20,37 +22,42 @@ import java.util.List;
 public class atividadePrincipal extends ActionBarActivity {
 
 
-
     private ArrayAdapter<String> mAdaptador;
+    private String tipo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atividade_principal);
 
-        String[] dados = {
+        Intent intent = getIntent();
+        tipo = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-                "Situação",
-                "Notificação",
-                        };
-
-        //Transforma dados em uma lista
-        List<String> previsao = new ArrayList<>(Arrays.asList(dados) );
+         //Transforma dados em uma lista
+        List<String> previsao = new ArrayList<>();
 
 
         //Cria o Adptador
-                mAdaptador = new ArrayAdapter<>(
-                        getApplicationContext(), // Contexto atual
-                        R.layout.item_lista_principal, // Nome do ID do layout
-                        R.id.item_texto, // ID do TextView a ser preenchido
-                        previsao);
+        mAdaptador = new ArrayAdapter<>(
+                getApplicationContext(), // Contexto atual
+                R.layout.item_lista_principal, // Nome do ID do layout
+                R.id.item_texto, // ID do TextView a ser preenchido
+                previsao);
 
-         // Conecta a lista ao adaptador
-                ListView listView = (ListView) findViewById(R.id.lista_principal);
-                listView.setAdapter(mAdaptador);
+        // Conecta a lista ao adaptador
+        ListView listView = (ListView) findViewById(R.id.lista_principal);
+        listView.setAdapter(mAdaptador);
 
         listView.setOnItemClickListener(new ItemClicado());
     }
+
+
+    @Override
+        protected void onStart() {
+                super.onStart();
+                atualizar();
+    }
+
 
 
     @Override
@@ -68,15 +75,46 @@ public class atividadePrincipal extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch (id) {
+
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_refresh:
+                atualizar();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
 
-    //sub classe para dar função ao click
+    private void atualizar() {
+        PegaDadosDoServidor pega = new PegaDadosDoServidor();
+        pega.execute();
+    }
+
+    public class PegaDadosDoServidor extends AsyncTask<Void, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            ServidorFalso servidor = new ServidorFalso();
+            return servidor.pegaDados(tipo);
+        }
+
+        @Override
+               protected void onPostExecute(String[] result) {
+                        if (result != null) {
+                                mAdaptador.clear();
+                               for(String r : result) {
+                                       mAdaptador.add(r);
+                }
+            }
+        }
+    }
+
+        //sub classe para dar função ao click
     private class ItemClicado implements AdapterView.OnItemClickListener{
 
         @Override
@@ -89,6 +127,4 @@ public class atividadePrincipal extends ActionBarActivity {
             ).show();
         }
     }
-
-
 }

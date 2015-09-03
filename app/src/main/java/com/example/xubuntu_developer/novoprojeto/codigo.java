@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 @SuppressWarnings("deprecation")
@@ -50,14 +53,31 @@ public class codigo extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+// Funcionario
 
     private class clique implements View.OnClickListener{
         @Override
         public void onClick(View v) {
 
             Intent detailIntent = new Intent(getApplication(), atividadePrincipal.class);
-            startActivity(detailIntent);
+
+            EditText editText = (EditText) findViewById(R.id.editText);
+            String pass = editText.getText().toString();
+
+            if ("123".equals(pass)) {
+                detailIntent.putExtra(Intent.EXTRA_TEXT, "aluno");
+                startActivity(detailIntent);
+            } else if ("456".equals(pass)) {
+                detailIntent.putExtra(Intent.EXTRA_TEXT, "professor");
+                startActivity(detailIntent);
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Senha inválida: ",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+
+
 
         }
     }

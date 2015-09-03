@@ -3,6 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
     <string name="title_activity_codigo">codigo</string>
     <string name="title_activity_detalhes">detalhes</string>
+    <string name="action_refresh">atualizar</string>
 </resources>
