@@ -24,11 +24,11 @@ public class detalhes extends ActionBarActivity {
 
 
         if (intent.hasExtra(Intent.EXTRA_TEXT)) {
-            String detailText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            long id = intent.getLongExtra(Intent.EXTRA_TEXT, 0L);
 
             TextView detailTextView = (TextView) findViewById(R.id.detalhe_item_texto);
 
-            detailTextView.setText(detailText);
+            detailTextView.setText(Long.toString(id));
         }
 
 
