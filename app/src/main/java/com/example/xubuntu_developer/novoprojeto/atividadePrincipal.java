@@ -183,12 +183,10 @@ public class atividadePrincipal extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-            Toast.makeText(getApplicationContext(),
-                    mAdaptador.getItem(position),
-                    Toast.LENGTH_SHORT
-            ).show();
+            Intent detailIntent = new Intent(getApplication(), detalhes.class);
+            detailIntent.putExtra(Intent.EXTRA_TEXT, mapaIds.get(position));
+            startActivity(detailIntent);
         }
     }
-
 }
+
