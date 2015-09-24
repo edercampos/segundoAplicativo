@@ -26,7 +26,25 @@ public class detalhes extends ActionBarActivity {
         if (intent.hasExtra(Intent.EXTRA_TEXT)) {
             long id = intent.getLongExtra(Intent.EXTRA_TEXT, 0L);
 
+            String whereClause = contratoDB.Aluno._ID + " =?";
+            String[] whereArgs = new String[]{
+                   Long.parseLong(id)
+            };
+
+
             TextView detailTextView = (TextView) findViewById(R.id.detalhe_item_texto);
+
+            detailTextView.setText(Long.toString(id));
+
+            TextView detailText_data = (TextView) findViewById(R.id.text_data);
+
+            detailTextView.setText(Long.toString(id));
+
+            TextView detailText_situacao = (TextView) findViewById(R.id.text_Posicao);
+
+            detailTextView.setText(Long.toString(id));
+
+            TextView detailText_mensagem = (TextView) findViewById(R.id.text_Mensagem);
 
             detailTextView.setText(Long.toString(id));
         }
@@ -35,7 +53,9 @@ public class detalhes extends ActionBarActivity {
 
         }
 
-        @Override
+    
+
+    @Override
         public boolean onCreateOptionsMenu (Menu menu){
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_detalhes, menu);
