@@ -2,6 +2,9 @@ package com.example.xubuntu_developer.novoprojeto;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 
 @SuppressWarnings("deprecation")
@@ -28,30 +33,47 @@ public class detalhes extends ActionBarActivity {
 
             String whereClause = contratoDB.Aluno._ID + " =?";
             String[] whereArgs = new String[]{
-                   Long.parseLong(id)
+                    Long.toString(id)
+
             };
 
 
-            TextView detailTextView = (TextView) findViewById(R.id.detalhe_item_texto);
+            SQLiteOpenHelper dbHelper = new AlunoDBHelper(getApplicationContext());
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            detailTextView.setText(Long.toString(id));
+            Cursor cursor = db.query(
+                    contratoDB.Aluno.NOME_TABELA, // Tabela
+                    null, // colunas (todas)
+                    whereClause, // colunas para o where
+                    whereArgs, // valores para o where
+                    null, // group by
+                    null, // having
+                    null  // sort by
+            );
+            if (cursor.moveToNext()) {
+                long data = cursor.getLong(cursor.getColumnIndex(contratoDB.Aluno.COLUNA_DATA));
+                String titulo = cursor.getString(cursor.getColumnIndex(contratoDB.Aluno.COLUNA_TIPO));
+                String texto = cursor.getString(cursor.getColumnIndex(contratoDB.Aluno.COLUNA_MENSAGEM));
 
-            TextView detailText_data = (TextView) findViewById(R.id.text_data);
+                String dataBonita = new SimpleDateFormat("dd/MM/yyyy").format(new Date(data * 1000));
 
-            detailTextView.setText(Long.toString(id));
 
-            TextView detailText_situacao = (TextView) findViewById(R.id.text_Posicao);
+                TextView detailTextView = (TextView) findViewById(R.id.detalhe_item_texto);
+                detailTextView.setText(Long.toString(id));
 
-            detailTextView.setText(Long.toString(id));
+                TextView detailText_data = (TextView) findViewById(R.id.text_data);
+                detailText_data.setText(dataBonita);
 
-            TextView detailText_mensagem = (TextView) findViewById(R.id.text_Mensagem);
+                TextView detailText_situacao = (TextView) findViewById(R.id.text_Posicao);
+                detailText_situacao.setText(titulo);
 
-            detailTextView.setText(Long.toString(id));
+                TextView detailText_mensagem = (TextView) findViewById(R.id.text_Mensagem);
+                detailText_mensagem.setText(texto);
+            }
+
+
         }
-
-
-
-        }
+    }
 
     
 
